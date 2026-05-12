@@ -1,5 +1,5 @@
 ############################################################
-# S3 — Loki / Tempo storage backends
+# S3 - Loki / Tempo storage backends
 #
 # Loki: chunks (logs)
 # Tempo: blocks (traces)
@@ -97,7 +97,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "tempo" {
 
     filter {}
 
-    # trace 는 historical 가치 낮음 — 30일이면 충분
+    # trace 는 historical 가치 낮음 - 30일이면 충분
     expiration {
       days = 30
     }

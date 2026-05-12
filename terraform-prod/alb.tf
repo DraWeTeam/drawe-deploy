@@ -60,7 +60,7 @@ resource "aws_lb_listener" "https" {
   ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
   certificate_arn   = aws_acm_certificate_validation.main.certificate_arn
 
-  # Host header 검증 — 매치 안 되는 모든 요청은 404
+  # Host header 검증 - 매치 안 되는 모든 요청은 404
   default_action {
     type = "fixed-response"
     fixed_response {
@@ -71,7 +71,7 @@ resource "aws_lb_listener" "https" {
   }
 }
 
-# Listener rules — 알려진 host 만 forward
+# Listener rules - 알려진 host 만 forward
 resource "aws_lb_listener_rule" "api_host" {
   listener_arn = aws_lb_listener.https.arn
   priority     = 50

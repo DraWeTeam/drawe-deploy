@@ -74,7 +74,7 @@ resource "aws_iam_role_policy" "ecs_execution_ssm" {
 }
 
 ############################################################
-# ECS Task Role — 앱 (backend, fastapi)
+# ECS Task Role - 앱 (backend, fastapi)
 ############################################################
 resource "aws_iam_role" "ecs_task" {
   name = "${local.name_prefix}-ecs-task-role"
@@ -127,7 +127,7 @@ resource "aws_iam_role_policy" "ecs_task_policy" {
 }
 
 ############################################################
-# ECS Task Role — Observability stack (Loki, Tempo, Grafana)
+# ECS Task Role - Observability stack (Loki, Tempo, Grafana)
 ############################################################
 resource "aws_iam_role" "observability_task" {
   name = "${local.name_prefix}-observability-task-role"
@@ -249,7 +249,7 @@ resource "aws_iam_role_policy" "ecs_task_amp_write" {
 # GitHub Actions OIDC Deploy Role
 #
 # ⚠ 변경: OIDC provider 자체는 dev terraform (terraform/iam-github.tf) 가 만든다.
-#   AWS 계정당 OIDC provider 는 1개만 존재 가능 — prod 가 새로 만들면 충돌.
+#   AWS 계정당 OIDC provider 는 1개만 존재 가능 - prod 가 새로 만들면 충돌.
 #   여기서는 data source 로 dev 가 만든 것을 reference.
 #
 # dev 에서 OIDC 를 안 만든 경우:
@@ -269,9 +269,14 @@ variable "github_repos" {
 }
 
 # ── data source: dev 가 만든 OIDC provider 참조 ──
-data "aws_iam_openid_connect_provider" "github" {
+resource "aws_iam_openid_connect_provider" "github" {
   count = var.github_owner != "" ? 1 : 0
-  url   = "https://token.actions.githubusercontent.com"
+  
+  url             = "https://token.actions.githubusercontent.com"
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1"]
+
+  tags = { Name = "${local.name_prefix}-github-oidc" }
 }
 
 data "aws_iam_policy_document" "github_assume" {
@@ -283,7 +288,7 @@ data "aws_iam_policy_document" "github_assume" {
 
     principals {
       type        = "Federated"
-      identifiers = [data.aws_iam_openid_connect_provider.github[0].arn]
+      identifiers = [aws_iam_openid_connect_provider.github[0].arn]
     }
 
     condition {
@@ -293,13 +298,17 @@ data "aws_iam_policy_document" "github_assume" {
     }
 
     # ⌁ prod 는 main branch 만 deploy 허용 (보안)
+    # ⌁ prod 는 main branch 또는 prod environment 에서만 deploy
+    # environment 는 GitHub 의 Selected branches=main 제한과 함께 적용됨 (이중 안전망)
     condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values = [
-        for repo in var.github_repos :
-        "repo:${var.github_owner}/${repo}:ref:refs/heads/main"
-      ]
+      values = flatten([
+        for repo in var.github_repos : [
+          "repo:${var.github_owner}/${repo}:ref:refs/heads/main",
+          "repo:${var.github_owner}/${repo}:environment:prod",
+        ]
+      ])
     }
   }
 }

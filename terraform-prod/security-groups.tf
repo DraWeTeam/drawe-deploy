@@ -2,11 +2,11 @@
 # ALB
 #
 # inbound: Cloudflare IPv4 만 :443 허용 (Full Strict).
-# :80 은 listener 도 SG 도 없음 — CF 가 :443 으로만 connect 함.
+# :80 은 listener 도 SG 도 없음 - CF 가 :443 으로만 connect 함.
 ############################################################
 resource "aws_security_group" "alb" {
   name        = "${local.name_prefix}-alb-sg"
-  description = "ALB ingress — Cloudflare edges only on :443"
+  description = "ALB ingress - Cloudflare edges only on :443"
   vpc_id      = aws_vpc.main.id
 
   ingress {
@@ -141,7 +141,7 @@ resource "aws_security_group" "ecs_observability" {
 
   # Grafana → Loki/Tempo (self ingress for observability stack)
   ingress {
-    description = "Grafana → Loki query / Tempo query (self)"
+    description = "Grafana to Loki query / Tempo query (self)"
     from_port   = 3200
     to_port     = 3200
     protocol    = "tcp"
@@ -163,7 +163,7 @@ resource "aws_security_group" "ecs_observability" {
 ############################################################
 resource "aws_security_group" "rds" {
   name        = "${local.name_prefix}-rds-sg"
-  description = "RDS MySQL — only from ECS tasks"
+  description = "RDS MySQL - only from ECS tasks"
   vpc_id      = aws_vpc.main.id
 
   ingress {

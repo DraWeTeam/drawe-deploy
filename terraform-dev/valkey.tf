@@ -13,12 +13,35 @@ locals {
   valkey_password = var.valkey_password != "" ? var.valkey_password : random_password.valkey[0].result
 }
 
+resource "aws_iam_role" "valkey_ssm" {
+  name = "${local.name_prefix}-valkey-ssm-role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Principal = { Service = "ec2.amazonaws.com" }
+      Action = "sts:AssumeRole"
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "valkey_ssm" {
+  role       = aws_iam_role.valkey_ssm.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+resource "aws_iam_instance_profile" "valkey_ssm" {
+  name = "${local.name_prefix}-valkey-ssm-profile"
+  role = aws_iam_role.valkey_ssm.name
+}
+
 resource "aws_instance" "valkey" {
   ami                    = data.aws_ami.al2023.id
   instance_type          = var.valkey_instance_type
   key_name               = var.key_pair_name
   subnet_id              = aws_subnet.private_a.id
   vpc_security_group_ids = [aws_security_group.valkey.id]
+  iam_instance_profile = aws_iam_instance_profile.valkey_ssm.name
 
   user_data = templatefile("${path.module}/../scripts/setup-valkey.sh", {
     valkey_password = local.valkey_password

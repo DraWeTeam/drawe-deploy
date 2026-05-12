@@ -1,5 +1,5 @@
 ############################################################
-# VPC — prod
+# VPC - prod
 ############################################################
 resource "aws_vpc" "main" {
   cidr_block           = var.vpc_cidr
@@ -10,7 +10,7 @@ resource "aws_vpc" "main" {
 }
 
 ############################################################
-# Subnets — public/private × 2 AZ
+# Subnets - public/private × 2 AZ
 ############################################################
 resource "aws_subnet" "public_a" {
   vpc_id                  = aws_vpc.main.id
@@ -74,12 +74,12 @@ resource "aws_route_table_association" "pub_c" {
 }
 
 ############################################################
-# Private Route Tables — AZ 별로 분리
+# Private Route Tables - AZ 별로 분리
 #
 # 0.0.0.0/0 route 는 inline 으로 안 정의함.
 # fck-nat instance 가 부팅 시 자기 ENI 로 route 를 dynamic 하게 추가/갱신.
 # 따라서 lifecycle ignore_changes 로 Terraform 이 그 route 를 안 건드리게 함.
-# (S3 prefix list route 는 vpc-endpoints.tf 의 aws_vpc_endpoint 가 관리 — 별도)
+# (S3 prefix list route 는 vpc-endpoints.tf 의 aws_vpc_endpoint 가 관리 - 별도)
 ############################################################
 resource "aws_route_table" "private_a" {
   vpc_id = aws_vpc.main.id

@@ -2,7 +2,7 @@
 
 DraWe 서비스의 AWS 인프라를 Terraform 으로 관리합니다.
 
-> 현재 인프라 구조를 지속적으로 개선 중이며, 일부 구성과 비용 전략은 프로젝트 진행에 따라 변경될 수 있습니다.
+> 현재 인프라 구조를 지속적으로 개선 중이며, 구성과 비용 전략은 프로젝트 진행에 따라 변경될 수 있습니다.
 
 dev / prod 환경을 별도 AWS 계정으로 운영하며,
 ECS EC2 (Graviton ARM) 기반으로 애플리케이션과 observability 스택을 구성합니다.
@@ -33,7 +33,6 @@ drawe-deploy/
 | ------ | -------------------------- | ---------------------------------- |
 | AWS 계정 | 분리 운영                      | 분리 운영                              |
 | 운영 시간  | 평일 13:00~18:00 KST         | 24/7                               |
-| ECS    | `t4g.large` × 1            | `t4g.xlarge` × 2                   |
 | NAT    | NAT instance (`t4g.micro`) | fck-nat Multi-AZ (ASG)             |
 | Redis  | EC2 Valkey                 | ElastiCache                        |
 | 관측     | Grafana Cloud              | AMP + self-host Grafana/Loki/Tempo |
@@ -56,7 +55,7 @@ dev / prod 는 동일 구조이며 observability destination 만 다릅니다.
 * Terraform >= 1.5
 * AWS CLI v2
 * AWS 인증 설정 (`aws configure`, SSO, IAM Identity Center 등)
-* prod 의 경우 Cloudflare API Token 필요
+* Cloudflare API Token 필요
 
 ### dev
 
@@ -64,6 +63,8 @@ dev / prod 는 동일 구조이며 observability destination 만 다릅니다.
 cd terraform-dev
 
 cp terraform.tfvars.example terraform.tfvars
+
+export CLOUDFLARE_API_TOKEN="<token>"
 
 terraform init
 terraform plan -out tfplan

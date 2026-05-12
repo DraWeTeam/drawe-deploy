@@ -11,7 +11,7 @@ resource "aws_vpc_endpoint" "s3" {
   service_name      = "com.amazonaws.${var.aws_region}.s3"
   vpc_endpoint_type = "Gateway"
 
-  # prod 는 AZ 별 route table 분리 — 둘 다 등록
+  # prod 는 AZ 별 route table 분리 - 둘 다 등록
   route_table_ids = [
     aws_route_table.private_a.id,
     aws_route_table.private_c.id,

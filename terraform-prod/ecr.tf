@@ -22,7 +22,7 @@ resource "aws_ecr_repository" "fastapi" {
   tags = { Name = "${local.name_prefix}-fastapi" }
 }
 
-# ── Lifecycle Policy — 최근 10개 이미지만 유지 ────────────
+# ── Lifecycle Policy - 최근 10개 이미지만 유지 ────────────
 resource "aws_ecr_lifecycle_policy" "backend" {
   repository = aws_ecr_repository.backend.name
   policy = jsonencode({

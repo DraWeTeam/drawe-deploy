@@ -118,10 +118,9 @@ resource "aws_ssm_parameter" "pinecone_index" {
 resource "aws_ssm_parameter" "alloy_config" {
   name  = "/${var.project}/${var.env}/alloy-config-b64"
   type  = "SecureString"
-  value = "CHANGE_ME_base64_encoded_alloy_config"
+  value = base64gzip(file("${path.module}/../configs/alloy-sidecar.alloy"))
   tier  = "Advanced"
   tags  = { Name = "${local.name_prefix}-alloy-config" }
-  lifecycle { ignore_changes = [value] }
 }
 
 resource "aws_ssm_parameter" "alloy_daemon_config" {

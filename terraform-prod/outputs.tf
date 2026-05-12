@@ -1,5 +1,5 @@
 ############################################################
-# Outputs — prod
+# Outputs - prod
 ############################################################
 output "alb_dns_name" {
   description = "ALB DNS name (cloudflare_record 가 가리키는 대상)"
@@ -79,13 +79,13 @@ output "next_steps" {
     ──────────────────────────────────────────────────────
 
     1. Cloudflare 대시보드 → SSL/TLS → Overview
-       모드를 "Full (strict)" 로 설정 (zone-level 설정 — 한 번만)
+       모드를 "Full (strict)" 로 설정 (zone-level 설정 - 한 번만)
 
     2. Cloudflare DNS 레코드 확인
        - ${var.domain_name}            CNAME → ALB (proxied ⚡)
        - grafana.${var.domain_name}    CNAME → ALB (proxied ⚡)
        - _xxx.${var.domain_name}       CNAME → ACM 검증용 (DNS only)
-       (Terraform 이 자동 등록함 — 대시보드에서 확인만)
+       (Terraform 이 자동 등록함 - 대시보드에서 확인만)
 
     3. SSM Parameter 시크릿 채우기
        aws ssm put-parameter --name "/drawe/prod/jwt-secret" \

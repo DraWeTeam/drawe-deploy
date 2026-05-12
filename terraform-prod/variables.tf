@@ -29,15 +29,15 @@ variable "az_c" {
 }
 
 ############################################################
-# ECS — prod 는 더 큰 instance + Multi-AZ
+# ECS - prod 는 더 큰 instance + Multi-AZ
 ############################################################
 variable "ecs_instance_type" {
-  description = "prod ECS 인스턴스 — observability stack 까지 올리므로 t4g.xlarge"
+  description = "prod ECS 인스턴스 - observability stack 까지 올리므로 t4g.xlarge"
   default     = "t4g.xlarge"   # 4 vCPU / 16 GB
 }
 
 variable "ecs_desired_instances" {
-  description = "prod ASG — Multi-AZ 분산 위해 최소 2"
+  description = "prod ASG - Multi-AZ 분산 위해 최소 2"
   default     = 2
 }
 
@@ -71,12 +71,12 @@ variable "grafana_memory" { default = 512 }
 # Observability
 ############################################################
 variable "otel_sampling_rate" {
-  description = "Trace sampling — prod 는 100% (또는 head sampling 비율)"
+  description = "Trace sampling - prod 는 100% (또는 head sampling 비율)"
   default     = "100"
 }
 
 ############################################################
-# RDS — Multi-AZ + 더 큰 instance
+# RDS - Multi-AZ + 더 큰 instance
 ############################################################
 variable "db_instance_class" {
   default = "db.t4g.small"
@@ -129,7 +129,7 @@ variable "valkey_auth_token" {
 # ElastiCache for Valkey
 ############################################################
 variable "elasticache_node_type" {
-  description = "ElastiCache node type — Valkey/Redis 호환"
+  description = "ElastiCache node type - Valkey/Redis 호환"
   default     = "cache.t4g.small"
 }
 

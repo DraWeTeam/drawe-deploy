@@ -26,7 +26,7 @@ resource "aws_cloudwatch_log_group" "observability" {
 }
 
 ############################################################
-# SNS Topic — Critical Alarms
+# SNS Topic - Critical Alarms
 #
 # email subscription 은 사용자가 SNS 콘솔에서 manual confirm
 ############################################################
@@ -101,7 +101,7 @@ resource "aws_cloudwatch_metric_alarm" "fastapi_unhealthy" {
 # ── ALB: 5xx 비율 ───────────────────────────────────────
 resource "aws_cloudwatch_metric_alarm" "alb_5xx_high" {
   alarm_name          = "${local.name_prefix}-alb-5xx-high"
-  alarm_description   = "ALB 5xx > 10/min for 3 min — backend 장애 추정"
+  alarm_description   = "ALB 5xx > 10/min for 3 min - backend 장애 추정"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 3
   metric_name         = "HTTPCode_Target_5XX_Count"
@@ -196,7 +196,7 @@ resource "aws_cloudwatch_metric_alarm" "valkey_cpu_high" {
 # t4g.nano 는 burst 100 Mbps 정도라 1 GB/min ≒ ~135Mbps 로 이미 한계 근처.
 resource "aws_cloudwatch_metric_alarm" "nat_egress_spike_a" {
   alarm_name          = "${local.name_prefix}-nat-egress-spike-a"
-  alarm_description   = "NAT instance (AZ-a) NetworkOut > 1GB/min — abuse 또는 LLM 폭주 의심"
+  alarm_description   = "NAT instance (AZ-a) NetworkOut > 1GB/min - abuse 또는 LLM 폭주 의심"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 5
   metric_name         = "NetworkOut"
@@ -215,7 +215,7 @@ resource "aws_cloudwatch_metric_alarm" "nat_egress_spike_a" {
 # ── NAT instance × 2: ASG 내 unhealthy → 재기동 안 됨 알림 ──
 resource "aws_cloudwatch_metric_alarm" "nat_a_unhealthy" {
   alarm_name          = "${local.name_prefix}-nat-a-unhealthy"
-  alarm_description   = "AZ-a NAT instance 가 1 미만 — outbound 끊긴 상태일 수 있음"
+  alarm_description   = "AZ-a NAT instance 가 1 미만 - outbound 끊긴 상태일 수 있음"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = 2
   metric_name         = "GroupInServiceInstances"

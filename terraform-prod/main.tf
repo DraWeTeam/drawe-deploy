@@ -1,5 +1,5 @@
 ############################################################
-# DraWe — prod 환경 Terraform
+# DraWe - prod 환경 Terraform
 #
 # dev (terraform/) 와 다른 점:
 #   - 24/7 운영 (EventBridge schedule 없음)
@@ -16,22 +16,22 @@
 ############################################################
 
 terraform {
-  required_version = ">= 1.6"
+  required_version = ">= 1.11"
 
   required_providers {
-    aws        = { source = "hashicorp/aws", version = "~> 5.50" }
+    aws        = { source = "hashicorp/aws", version = "~> 5.100" }
     random     = { source = "hashicorp/random", version = "~> 3.6" }
     http       = { source = "hashicorp/http", version = "~> 3.4" }
-    cloudflare = { source = "cloudflare/cloudflare", version = "~> 4.40" }
+    cloudflare = { source = "cloudflare/cloudflare", version = "~> 4.52" }
   }
 
-  # backend "s3" {
-  #   bucket         = "drawe-tfstate-XXXXX"
-  #   key            = "drawe/prod/terraform.tfstate"
-  #   region         = "ap-northeast-2"
-  #   dynamodb_table = "drawe-tfstate-lock"
-  #   encrypt        = true
-  # }
+  backend "s3" {
+    bucket         = "drawe-tfstate-933832340498"
+    key            = "drawe/prod/terraform.tfstate"
+    region         = "ap-northeast-2"
+    use_lockfile   = true
+    encrypt        = true
+  }
 }
 
 provider "aws" {

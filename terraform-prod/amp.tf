@@ -1,5 +1,5 @@
 ############################################################
-# AMP — Amazon Managed Service for Prometheus
+# AMP - Amazon Managed Service for Prometheus
 #
 # Mimir self-host 의 관리형 대체. metric ingest 종량 과금.
 # Alloy 가 prometheus.remote_write 로 데이터 push, Grafana 가 query.

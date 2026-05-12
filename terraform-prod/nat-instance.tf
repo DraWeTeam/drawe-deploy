@@ -2,7 +2,7 @@
 # NAT Instance × 2 (AZ별 1개) + ASG
 #
 # fck-nat AMI 사용 (https://github.com/AndrewGuenther/fck-nat).
-# Marketplace 가입 필요 없음 — 공개 AMI 로 배포됨.
+# Marketplace 가입 필요 없음 - 공개 AMI 로 배포됨.
 # AMI 가 부팅 시 user_data 의 /etc/fck-nat.conf 를 읽어:
 #   1) 자기 자신의 source/dest check 끔
 #   2) 지정된 EIP 를 자기 instance 에 attach
@@ -11,7 +11,7 @@
 #
 # ASG (desired=1) 가 instance 헬스 모니터링.
 # 인스턴스가 죽으면 같은 AZ 에 새로 띄우고, 부팅 user_data 가 EIP/route 재셋업.
-# Terraform 의 route table 은 0.0.0.0/0 route 를 inline 으로 안 가짐 —
+# Terraform 의 route table 은 0.0.0.0/0 route 를 inline 으로 안 가짐 -
 # fck-nat 가 동적으로 관리 (lifecycle ignore_changes).
 ############################################################
 
@@ -41,11 +41,11 @@ resource "aws_eip" "nat_c" {
 # private subnet 의 모든 트래픽을 받아서 인터넷으로 보냄
 resource "aws_security_group" "nat_instance" {
   name        = "${local.name_prefix}-nat-instance-sg"
-  description = "fck-nat instances — accept egress from private subnets"
+  description = "fck-nat instances - accept egress from private subnets"
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    description = "From private subnets — any protocol"
+    description = "From private subnets - any protocol"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -113,7 +113,7 @@ resource "aws_iam_instance_profile" "nat_instance" {
 }
 
 ############################################################
-# Launch Template — AZ-a
+# Launch Template - AZ-a
 ############################################################
 resource "aws_launch_template" "nat_a" {
   name_prefix   = "${local.name_prefix}-nat-a-"
@@ -155,7 +155,7 @@ resource "aws_launch_template" "nat_a" {
 }
 
 ############################################################
-# Launch Template — AZ-c
+# Launch Template - AZ-c
 ############################################################
 resource "aws_launch_template" "nat_c" {
   name_prefix   = "${local.name_prefix}-nat-c-"
@@ -197,7 +197,7 @@ resource "aws_launch_template" "nat_c" {
 }
 
 ############################################################
-# ASG × 2 — desired=1 each, EC2 health check
+# ASG × 2 - desired=1 each, EC2 health check
 ############################################################
 resource "aws_autoscaling_group" "nat_a" {
   name_prefix         = "${local.name_prefix}-nat-a-"

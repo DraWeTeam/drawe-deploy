@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-VALKEY_VERSION="8.1.1"
+VALKEY_VERSION="8.1.6"
 VALKEY_PASSWORD="${valkey_password}"
 
 exec > /var/log/valkey-setup.log 2>&1
@@ -68,7 +68,7 @@ Description=Valkey In-Memory Data Store
 After=network.target
 
 [Service]
-Type=notify
+Type=simple
 User=valkey
 Group=valkey
 ExecStart=/usr/local/bin/valkey-server /etc/valkey/valkey.conf

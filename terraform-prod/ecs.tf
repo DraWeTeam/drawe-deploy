@@ -85,7 +85,7 @@ resource "aws_launch_template" "ecs" {
   lifecycle { create_before_destroy = true }
 }
 
-# Auto Scaling Group — Multi-AZ
+# Auto Scaling Group - Multi-AZ
 resource "aws_autoscaling_group" "ecs" {
   name_prefix         = "${local.name_prefix}-ecs-"
   vpc_zone_identifier = [aws_subnet.private_a.id, aws_subnet.private_c.id]
@@ -113,7 +113,7 @@ resource "aws_autoscaling_group" "ecs" {
 }
 
 ############################################################
-# Cloud Map (내부 DNS — fastapi, loki, tempo)
+# Cloud Map (내부 DNS - fastapi, loki, tempo)
 ############################################################
 resource "aws_service_discovery_private_dns_namespace" "internal" {
   name = "${local.name_prefix}.local"
@@ -169,7 +169,7 @@ locals {
     { name = "OTEL_TRACES_SAMPLER", value = "parentbased_always_on" },
   ]
 
-  # prod alloy env — Grafana Cloud 가 아닌 self-host endpoint 들
+  # prod alloy env - Grafana Cloud 가 아닌 self-host endpoint 들
   alloy_env = [
     { name = "ALLOY_DEPLOY_ENV",         value = var.env },
     { name = "ALLOY_SAMPLING_RATE",      value = var.otel_sampling_rate },
@@ -185,7 +185,7 @@ locals {
 }
 
 ############################################################
-# Layer 1 — DAEMON Alloy
+# Layer 1 - DAEMON Alloy
 ############################################################
 resource "aws_ecs_task_definition" "alloy_daemon" {
   family                   = "${local.name_prefix}-alloy-daemon"
@@ -255,6 +255,7 @@ resource "aws_ecs_service" "alloy_daemon" {
   cluster             = aws_ecs_cluster.main.id
   task_definition     = aws_ecs_task_definition.alloy_daemon.arn
   scheduling_strategy = "DAEMON"
+  launch_type         = "EC2"   # ← 이 줄 추가 (cluster default capacity provider strategy 우회)
 
   deployment_circuit_breaker {
     enable   = true
@@ -267,7 +268,7 @@ resource "aws_ecs_service" "alloy_daemon" {
 }
 
 ############################################################
-# Layer 2 — Backend
+# Layer 2 - Backend
 ############################################################
 resource "aws_ecs_task_definition" "backend" {
   family                   = "${local.name_prefix}-backend"
@@ -352,7 +353,7 @@ resource "aws_ecs_task_definition" "backend" {
 }
 
 ############################################################
-# Layer 2 — FastAPI
+# Layer 2 - FastAPI
 ############################################################
 resource "aws_ecs_task_definition" "fastapi" {
   family                   = "${local.name_prefix}-fastapi"
@@ -419,7 +420,7 @@ resource "aws_ecs_service" "backend" {
   task_definition = aws_ecs_task_definition.backend.arn
   desired_count   = var.backend_desired_count
 
-  enable_execute_command = true   # ECS Exec — debug shell
+  enable_execute_command = true   # ECS Exec - debug shell
 
   capacity_provider_strategy {
     capacity_provider = aws_ecs_capacity_provider.ec2.name

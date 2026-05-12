@@ -5,7 +5,7 @@
 # - Tempo  (traces) monolithic 단일 바이너리, S3 backend
 # - Grafana (UI)    AMP/Loki/Tempo 를 데이터소스로 연결
 #
-# Mimir 는 self-host 안 함 — AMP 사용 (amp.tf 참조)
+# Mimir 는 self-host 안 함 - AMP 사용 (amp.tf 참조)
 ############################################################
 
 # ── Cloud Map: 내부 서비스 디스커버리 ────────────────────
@@ -36,7 +36,7 @@ resource "aws_service_discovery_service" "tempo" {
 }
 
 ############################################################
-# Loki — monolithic mode, S3 backend
+# Loki - monolithic mode, S3 backend
 ############################################################
 resource "aws_ecs_task_definition" "loki" {
   family                   = "${local.name_prefix}-loki"
@@ -99,7 +99,7 @@ resource "aws_ecs_service" "loki" {
   name            = "${local.name_prefix}-loki"
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.loki.arn
-  desired_count   = 1   # monolithic 단일 — 더 키우려면 microservices 모드로 분리
+  desired_count   = 1   # monolithic 단일 - 더 키우려면 microservices 모드로 분리
 
   capacity_provider_strategy {
     capacity_provider = aws_ecs_capacity_provider.ec2.name
@@ -130,7 +130,7 @@ resource "aws_ecs_service" "loki" {
 }
 
 ############################################################
-# Tempo — monolithic mode, S3 backend
+# Tempo - monolithic mode, S3 backend
 ############################################################
 resource "aws_ecs_task_definition" "tempo" {
   family                   = "${local.name_prefix}-tempo"
@@ -222,7 +222,7 @@ resource "aws_ecs_service" "tempo" {
 }
 
 ############################################################
-# Grafana — UI (AMP / Loki / Tempo / X-Ray 데이터소스)
+# Grafana - UI (AMP / Loki / Tempo / X-Ray 데이터소스)
 ############################################################
 resource "aws_ecs_task_definition" "grafana" {
   family                   = "${local.name_prefix}-grafana"

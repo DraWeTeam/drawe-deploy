@@ -11,7 +11,7 @@ resource "aws_db_subnet_group" "main" {
 # DB Password
 #
 # var.db_password 비어있으면 random_password 자동 생성, 아니면 그 값 사용.
-# locals.db_password 가 최종 값 — RDS, SSM 모두 이 local 참조.
+# locals.db_password 가 최종 값 - RDS, SSM 모두 이 local 참조.
 ############################################################
 resource "random_password" "db" {
   count            = var.db_password == "" ? 1 : 0
@@ -25,7 +25,7 @@ locals {
 }
 
 ############################################################
-# RDS MySQL — Multi-AZ
+# RDS MySQL - Multi-AZ
 ############################################################
 resource "aws_db_instance" "main" {
   identifier     = "${local.name_prefix}-mysql"
@@ -57,8 +57,8 @@ resource "aws_db_instance" "main" {
   final_snapshot_identifier = "${local.name_prefix}-mysql-final-${formatdate("YYYYMMDD-hhmm", timestamp())}"
   deletion_protection       = true
 
-  performance_insights_enabled = true
-  performance_insights_retention_period = 7
+  performance_insights_enabled = false # db.t4g.small 클래스에서는 PI 미지원
+  # performance_insights_retention_period = 7
 
   parameter_group_name = aws_db_parameter_group.main.name
 

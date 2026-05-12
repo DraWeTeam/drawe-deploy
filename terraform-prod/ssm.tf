@@ -1,5 +1,5 @@
 ############################################################
-# SSM Parameter Store — prod
+# SSM Parameter Store - prod
 #
 # dev 와 차이:
 # - Grafana Cloud 시크릿 없음 (self-host 라)
@@ -38,34 +38,34 @@ resource "aws_ssm_parameter" "grafana_admin_password" {
   value = random_password.grafana_admin.result
 }
 
-# Loki / Tempo config — tier="Advanced" (4KB 초과)
+# Loki / Tempo config - tier="Standard" (압축 안 함, entrypoint 가 gunzip 안 하므로)
 resource "aws_ssm_parameter" "loki_config" {
   name  = "/${var.project}/${var.env}/loki-config-b64"
   type  = "SecureString"
   value = base64encode(file("${path.module}/../configs/loki-config.yaml"))
-  tier  = "Advanced"
+  tier  = "Standard"
 }
 
 resource "aws_ssm_parameter" "tempo_config" {
   name  = "/${var.project}/${var.env}/tempo-config-b64"
   type  = "SecureString"
   value = base64encode(file("${path.module}/../configs/tempo-config.yaml"))
-  tier  = "Advanced"
+  tier  = "Standard"
 }
 
-# Alloy config (prod) — base64 of alloy-sidecar-prod.alloy
+# Alloy config (prod) — base64gzip + Standard
 resource "aws_ssm_parameter" "alloy_config" {
   name  = "/${var.project}/${var.env}/alloy-config-b64"
   type  = "SecureString"
-  value = base64encode(file("${path.module}/../configs/alloy-sidecar-prod.alloy"))
-  tier  = "Advanced"
+  value = base64gzip(file("${path.module}/../configs/alloy-sidecar-prod.alloy"))
+  tier  = "Standard"
 }
 
 resource "aws_ssm_parameter" "alloy_daemon_config" {
   name  = "/${var.project}/${var.env}/alloy-daemon-config-b64"
   type  = "SecureString"
-  value = base64encode(file("${path.module}/../configs/alloy-daemon.alloy"))
-  tier  = "Advanced"
+  value = base64gzip(file("${path.module}/../configs/alloy-daemon.alloy"))
+  tier  = "Standard"
 }
 
 # ── 사용자 manual update ─────────────────────────────
@@ -118,7 +118,7 @@ resource "aws_ssm_parameter" "pinecone_api_key" {
   lifecycle { ignore_changes = [value] }
 }
 
-# ── Pinecone host & index — backend application.properties 신규 키 ──
+# ── Pinecone host & index - backend application.properties 신규 키 ──
 resource "aws_ssm_parameter" "pinecone_host" {
   name  = "/${var.project}/${var.env}/pinecone-host"
   type  = "String"

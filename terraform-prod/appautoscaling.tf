@@ -1,4 +1,4 @@
-# Application Auto Scaling — Backend
+# Application Auto Scaling - Backend
 resource "aws_appautoscaling_target" "backend" {
   service_namespace  = "ecs"
   resource_id        = "service/${aws_ecs_cluster.main.name}/${aws_ecs_service.backend.name}"
@@ -41,7 +41,7 @@ resource "aws_appautoscaling_policy" "backend_memory" {
   }
 }
 
-# Application Auto Scaling — FastAPI
+# Application Auto Scaling - FastAPI
 resource "aws_appautoscaling_target" "fastapi" {
   service_namespace  = "ecs"
   resource_id        = "service/${aws_ecs_cluster.main.name}/${aws_ecs_service.fastapi.name}"
