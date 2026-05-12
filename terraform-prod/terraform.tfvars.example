@@ -3,11 +3,11 @@
 ############################################################
 
 # ── 필수 ─────────────────────────────────────────────────
-key_pair_name = "drawe-prod-keypair"
+key_pair_name = "example-prod-keypair"
 
 # 가비아에서 산 도메인 (Cloudflare DNS 에 등록되어 있다고 가정)
-domain_name  = "api.drawe.com"
-frontend_url = "https://drawe.com"
+domain_name  = "api.example.com"
+frontend_url = "https://example.com"
 
 # Cloudflare zone ID — 대시보드 Overview 우측 사이드바에서 복사
 cloudflare_zone_id = "abc123def456..."
@@ -18,7 +18,7 @@ cloudflare_zone_id = "abc123def456..."
 
 # ── GitHub OIDC (CI/CD) ──────────────────────────────────
 # OIDC trust 가 refs/heads/main 만 허용 — main 외 브랜치에서 prod 배포 시도 시 STS 거부
-github_owner = "hyegyeongseo"
+github_owner = "your-org"
 github_repos = ["drawe-backend", "drawe-fastapi"]
 
 # ── SNS alert email ──────────────────────────────────────
