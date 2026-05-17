@@ -1,6 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
+# ── SSM Agent 설치 (AL2023 minimal AMI 대비) ─────────────
+sudo dnf install -y amazon-ssm-agent || \
+  sudo dnf install -y https://s3.ap-northeast-2.amazonaws.com/amazon-ssm-ap-northeast-2/latest/linux_arm64/amazon-ssm-agent.rpm
+sudo systemctl enable --now amazon-ssm-agent
+
 VALKEY_VERSION="8.1.6"
 VALKEY_PASSWORD="${valkey_password}"
 
