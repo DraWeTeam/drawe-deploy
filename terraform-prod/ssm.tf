@@ -132,3 +132,20 @@ resource "aws_ssm_parameter" "pinecone_index" {
   value = "CHANGE_ME_pinecone_index_name"
   lifecycle { ignore_changes = [value] }
 }
+
+# ── Bria AI ─────────────────────────────────────────────
+resource "aws_ssm_parameter" "bria_api_key" {
+  name  = "/${var.project}/${var.env}/bria-api-key"
+  type  = "SecureString"
+  value = "CHANGE_ME"
+  tags  = { Name = "${local.name_prefix}-bria-api-key" }
+  lifecycle { ignore_changes = [value] }
+}
+
+resource "aws_ssm_parameter" "bria_base_url" {
+  name  = "/${var.project}/${var.env}/bria-base-url"
+  type  = "String"
+  value = "https://engine.prod.bria-api.com"
+  tags  = { Name = "${local.name_prefix}-bria-base-url" }
+  lifecycle { ignore_changes = [value] }
+}

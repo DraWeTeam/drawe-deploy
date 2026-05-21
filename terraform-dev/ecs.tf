@@ -336,6 +336,8 @@ resource "aws_ecs_task_definition" "backend" {
         { name = "PINECONE_API_KEY", valueFrom = aws_ssm_parameter.pinecone_api_key.arn },
         { name = "PINECONE_HOST", valueFrom = aws_ssm_parameter.pinecone_host.arn },
         { name = "PINECONE_INDEX", valueFrom = aws_ssm_parameter.pinecone_index.arn },
+        { name = "BRIA_API_KEY",     valueFrom = aws_ssm_parameter.bria_api_key.arn },
+        { name = "BRIA_BASE_URL",    valueFrom = aws_ssm_parameter.bria_base_url.arn },
       ]
 
       logConfiguration = {
