@@ -18,7 +18,7 @@ variable "github_owner" {
 variable "github_repos" {
   description = "Deploy 권한 줄 레포 이름 목록 (owner 제외)"
   type        = list(string)
-  default     = ["drawe-backend", "drawe-fastapi"]
+  default     = ["drawe-backend", "drawe-fastapi", "drawe"]
 }
 
 # ── OIDC Provider (계정당 1개만 존재해야 함) ──────────────

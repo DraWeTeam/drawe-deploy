@@ -19,7 +19,7 @@ cloudflare_zone_id = "abc123def456..."
 # ── GitHub OIDC (CI/CD) ──────────────────────────────────
 # OIDC trust 가 refs/heads/main 만 허용 — main 외 브랜치에서 prod 배포 시도 시 STS 거부
 github_owner = "your-org"
-github_repos = ["drawe-backend", "drawe-fastapi"]
+github_repos = ["drawe-backend", "drawe-fastapi", "drawe"]
 
 # ── SNS alert email ──────────────────────────────────────
 alert_email = "ops@example.com"
